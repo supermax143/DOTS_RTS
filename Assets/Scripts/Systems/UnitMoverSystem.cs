@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using Tools;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -14,14 +15,16 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (transform, speed, velocity) in 
-                     SystemAPI.Query<RefRW<LocalTransform>, RefRO<MoveSpeed>, RefRW<PhysicsVelocity>>())
+            foreach (var (transform, mover, velocity) in 
+                     SystemAPI.Query<RefRW<LocalTransform>, RefRO<UnitMover>, RefRW<PhysicsVelocity>>())
             {
-                var targetPosition = transform.ValueRO.Position + new float3(speed.ValueRO.Speed, 0, 0);
+                float3 targetPosition = mover.ValueRO.TargetPosition;//MouseWorldPosition.Instance.GetPositon();
                 var moveDir = math.normalize(targetPosition - transform.ValueRO.Position);
-                //transform.ValueRW.Position = targetPosition;
-                transform.ValueRW.Rotation = quaternion.LookRotation(moveDir, math.up());
-                velocity.ValueRW.Linear = moveDir * speed.ValueRO.Speed;
+
+                var targetRotation = quaternion.LookRotation(moveDir, math.up());
+                transform.ValueRW.Rotation = math.slerp(transform.ValueRO.Rotation, targetRotation, SystemAPI.Time.DeltaTime * mover.ValueRO.RotationSpeed);
+                
+                velocity.ValueRW.Linear = moveDir * mover.ValueRO.MoveSpeed;
                 velocity.ValueRW.Angular = float3.zero;
             }
         }
