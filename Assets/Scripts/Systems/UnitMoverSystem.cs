@@ -1,32 +1,62 @@
 ﻿using DefaultNamespace;
-using Tools;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine.PlayerLoop;
 
 namespace Systems
 {
     public partial struct UnitMoverSystem : ISystem
     {
-        
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (transform, mover, velocity) in 
-                     SystemAPI.Query<RefRW<LocalTransform>, RefRO<UnitMover>, RefRW<PhysicsVelocity>>())
+            var job = new UnitMoverJob
             {
-                float3 targetPosition = mover.ValueRO.TargetPosition;//MouseWorldPosition.Instance.GetPositon();
-                var moveDir = math.normalize(targetPosition - transform.ValueRO.Position);
+                DeltaTime = SystemAPI.Time.DeltaTime,
+                StopThreshold = 1
+            };
+            job.ScheduleParallel();
 
-                var targetRotation = quaternion.LookRotation(moveDir, math.up());
-                transform.ValueRW.Rotation = math.slerp(transform.ValueRO.Rotation, targetRotation, SystemAPI.Time.DeltaTime * mover.ValueRO.RotationSpeed);
-                
-                velocity.ValueRW.Linear = moveDir * mover.ValueRO.MoveSpeed;
-                velocity.ValueRW.Angular = float3.zero;
+            // foreach (var (transform, mover, velocity) in 
+            //          SystemAPI.Query<RefRW<LocalTransform>, RefRO<UnitMover>, RefRW<PhysicsVelocity>>())
+            // {
+            //     float3 targetPosition = mover.ValueRO.TargetPosition;//MouseWorldPosition.Instance.GetPositon();
+            //     var moveDir = math.normalize(targetPosition - transform.ValueRO.Position);
+            //
+            //     var targetRotation = quaternion.LookRotation(moveDir, math.up());
+            //     transform.ValueRW.Rotation = math.slerp(transform.ValueRO.Rotation, targetRotation, SystemAPI.Time.DeltaTime * mover.ValueRO.RotationSpeed);
+            //     
+            //     velocity.ValueRW.Linear = moveDir * mover.ValueRO.MoveSpeed;
+            //     velocity.ValueRW.Angular = float3.zero;
+            // }
+        }
+    }
+
+    [BurstCompile]
+    public partial struct UnitMoverJob : IJobEntity
+    {
+        public float DeltaTime;
+        public float StopThreshold;
+        
+        public void Execute(ref LocalTransform transform, in UnitMover mover, ref PhysicsVelocity velocity)
+        {
+            var targetPosition = mover.TargetPosition;
+            if (math.distance(transform.Position, targetPosition) < StopThreshold)
+            {
+                velocity.Linear = float3.zero;
+                velocity.Angular = float3.zero;
+                return;
             }
+            
+            var moveDir = math.normalize(targetPosition - transform.Position);
+            
+            var targetRotation = quaternion.LookRotation(moveDir, math.up());
+            transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
+
+            velocity.Linear = moveDir * mover.MoveSpeed;
+            velocity.Angular = float3.zero;
         }
     }
 }

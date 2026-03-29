@@ -8,6 +8,9 @@ namespace Tools
 {
     public class UnitSelectionManager : MonoBehaviour
     {
+        [SerializeField]
+        private MouseWorldPosition _mouseWorldPosition;
+        
         private void Update()
         {
             if (!Input.GetMouseButtonDown(0))
@@ -15,7 +18,7 @@ namespace Tools
                 return;
             }
 
-            SetUnitTargetPosition(MouseWorldPosition.Instance.GetPositon());
+            SetUnitTargetPosition(_mouseWorldPosition.GetPositon());
         }
 
         private void SetUnitTargetPosition(Vector3 position)
@@ -31,8 +34,9 @@ namespace Tools
             {
                 var mover = unitMovers[i];
                 mover.TargetPosition = position;
-                entityManager.SetComponentData(entities[i], mover);
+                unitMovers[i] = mover;
             }
+            entityQuery.CopyFromComponentDataArray(unitMovers);
         }
     }
 }

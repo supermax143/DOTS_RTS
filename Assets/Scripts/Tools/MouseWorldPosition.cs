@@ -7,13 +7,6 @@ namespace Tools
     public class MouseWorldPosition : MonoBehaviour
     {
 
-        public static MouseWorldPosition Instance {get; private set;}
-
-        private void Awake()
-        {
-            Instance = this;
-        }
-
         public Vector3 GetPositon()
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
