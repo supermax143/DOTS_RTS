@@ -43,18 +43,18 @@ namespace Systems
         public void Execute(ref LocalTransform transform, in UnitMover mover, ref PhysicsVelocity velocity)
         {
             var targetPosition = mover.TargetPosition;
+            var moveDir = math.normalize(targetPosition - transform.Position);
+            var targetRotation = quaternion.LookRotation(moveDir, math.up());
+            
             if (math.distance(transform.Position, targetPosition) < StopThreshold)
             {
+                transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
                 velocity.Linear = float3.zero;
                 velocity.Angular = float3.zero;
                 return;
             }
             
-            var moveDir = math.normalize(targetPosition - transform.Position);
-            
-            var targetRotation = quaternion.LookRotation(moveDir, math.up());
             transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
-
             velocity.Linear = moveDir * mover.MoveSpeed;
             velocity.Angular = float3.zero;
         }

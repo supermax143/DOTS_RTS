@@ -2,8 +2,10 @@
 using DefaultNamespace;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace Tools
 {
@@ -11,11 +13,15 @@ namespace Tools
     {
         [SerializeField]
         private MouseWorldPosition _mouseWorldPosition;
-
+        [SerializeField]
+        private float _minMultipleSelection = 40;
+        
         public event Action OnStartSelection;
         public event Action OnEndSelection;
 
         private Vector2 _selectionStartPosition;
+        
+        public static int UnitLayer => LayerMask.NameToLayer("Unit");
         
         private void Update()
         {
@@ -27,7 +33,16 @@ namespace Tools
 
             if (Input.GetMouseButtonUp(0))
             {
-                UpdateSelectedUnits();
+                var size = GetSelectionRect().size;
+                if (size.x + size.y > _minMultipleSelection)
+                {
+                    UpdateMultipleSelectedUnits();
+                }
+                else
+                {
+                    UpdateSingleSelectionUnit();
+                }
+                    
                 OnEndSelection?.Invoke();
             }
             
@@ -38,7 +53,6 @@ namespace Tools
 
             SetUnitTargetPosition(_mouseWorldPosition.GetPositon());
         }
-
 
         public Rect GetSelectionRect()
         {
@@ -58,7 +72,8 @@ namespace Tools
                 max = upperRightCorner
             };
         }
-        private void UpdateSelectedUnits()
+
+        private void DeselectAll()
         {
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             
@@ -71,7 +86,52 @@ namespace Tools
             {
                 entityManager.SetComponentEnabled<Selection>(selectedUnitsEntities[i], false);
             }
-            
+        }
+        
+        private void UpdateSingleSelectionUnit()
+        {
+            DeselectAll();
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+            var query = entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+            var physicsWorld = query.GetSingleton<PhysicsWorldSingleton>();
+            var collisionWorld = physicsWorld.CollisionWorld;
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var raycastInput = new RaycastInput()
+            {
+                Start = ray.GetPoint(0),
+                End = ray.GetPoint(9999),
+                Filter = new CollisionFilter()
+                {
+                    BelongsTo = ~0u,
+                    CollidesWith = 1u << UnitLayer
+                }
+            };
+
+            if (collisionWorld.CastRay(raycastInput, out RaycastHit hit))
+            {
+                if (entityManager.HasComponent<Unit>(hit.Entity))
+                {
+                    entityManager.SetComponentEnabled<Selection>(hit.Entity, true);
+                }
+            }
+        }
+
+        
+        private void UpdateMultipleSelectedUnits()
+        {
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            //
+            // var selectedUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
+            //     .WithAll<Selection>()
+            //     .Build(entityManager);
+            //
+            // var selectedUnitsEntities = selectedUnitsQuery.ToEntityArray(Allocator.Temp);
+            // for (int i = 0; i < selectedUnitsEntities.Length; i++)
+            // {
+            //     entityManager.SetComponentEnabled<Selection>(selectedUnitsEntities[i], false);
+            // }
+            DeselectAll();
             var allUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<LocalTransform, Unit>()
                 .Build(entityManager);
