@@ -6,6 +6,9 @@ namespace DefaultNamespace
 {
     public class SelectionAuthoring : MonoBehaviour
     {
+
+        public GameObject Visual;
+        public float VisualScale = 1.5f;
         
         public class Baker : Baker<SelectionAuthoring>
         {
@@ -14,7 +17,8 @@ namespace DefaultNamespace
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, new Selection()
                 {
-                    
+                    Visual = GetEntity(authoring.Visual, TransformUsageFlags.Dynamic),
+                    VisualScale = authoring.VisualScale
                 });   
                 SetComponentEnabled<Selection>(entity, false);
             }
@@ -25,5 +29,6 @@ namespace DefaultNamespace
 
 public struct Selection : IComponentData, IEnableableComponent
 {
-    
+    public Entity Visual;
+    public float VisualScale;
 }

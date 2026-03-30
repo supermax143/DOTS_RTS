@@ -203,6 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76569e6acc044e9cae766ac7fbe49052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.SelectionAuthoring
+  Visual: {fileID: 4879301312265718644}
+  VisualScale: 1.2
 --- !u!1 &4879301312265718644
 GameObject:
   m_ObjectHideFlags: 0
