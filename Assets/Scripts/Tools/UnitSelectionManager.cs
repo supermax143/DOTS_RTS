@@ -25,10 +25,9 @@ namespace Tools
         {
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var entityQuery = new EntityQueryBuilder(Allocator.Temp)
-                .WithAll<UnitMover>()
+                .WithAll<UnitMover, Selection>()
                 .Build(entityManager);
             
-            var entities = entityQuery.ToEntityArray(Allocator.Temp);
             var unitMovers = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
             for (int i = 0; i < unitMovers.Length; i++)
             {
