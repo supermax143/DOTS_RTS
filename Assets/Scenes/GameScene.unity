@@ -209,6 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::View.UnitSelectionView
   _selectionManager: {fileID: 660664270}
   _selectionRect: {fileID: 151552138}
+  _canvas: {fileID: 622647117}
 --- !u!1 &622647114
 GameObject:
   m_ObjectHideFlags: 0

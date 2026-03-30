@@ -73,8 +73,7 @@ namespace Tools
             }
             
             var allUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
-                .WithAll<LocalTransform>()
-                .WithPresent<Selection>()
+                .WithAll<LocalTransform, Unit>()
                 .Build(entityManager);
 
             var selectionRect = GetSelectionRect();

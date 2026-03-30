@@ -10,7 +10,10 @@ namespace View
         private UnitSelectionManager _selectionManager;
         [SerializeField]
         private RectTransform _selectionRect;
-
+        [SerializeField]
+        private Canvas _canvas;
+        
+        
         private bool _selectionActive = false;
         
         private void Awake()
@@ -32,9 +35,10 @@ namespace View
 
         private void UpdateSelectionSize()
         {
+            var scale = _canvas.transform.localScale.x;
             var rect = _selectionManager.GetSelectionRect();
-            _selectionRect.anchoredPosition = rect.position;
-            _selectionRect.sizeDelta = rect.size;
+            _selectionRect.anchoredPosition = rect.position / scale;
+            _selectionRect.sizeDelta = rect.size / scale;
         }
 
         private void StartSelectionHandler()
