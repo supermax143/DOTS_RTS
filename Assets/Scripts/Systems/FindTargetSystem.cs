@@ -24,7 +24,7 @@ namespace DefaultNamespace
             var collisionWorld = physicsWorld.CollisionWorld;
 
             NativeList<DistanceHit> hitList = new NativeList<DistanceHit>(Allocator.Temp);
-            foreach (var (findTarget, transform, entity) in SystemAPI.Query<FindTarget, RefRO<LocalTransform>>().WithEntityAccess())
+            foreach (var (findTarget, transform, target, entity) in SystemAPI.Query<FindTarget, RefRO<LocalTransform>, RefRW<Target>>().WithEntityAccess())
             {
                 // Создаем сферический поиск
                 var sphereInput = new PointDistanceInput
@@ -57,7 +57,7 @@ namespace DefaultNamespace
                         if (targetUnit.ValueRO.UnitFaction == findTarget.TargetFaction)
                         {
                             Debug.Log($"Entity {entity.Index} found target {hitEntity.Index} with faction {findTarget.TargetFaction}");
-                            
+                            target.ValueRW.TargetEntity = hitEntity;
                             break;
                         }
                     }
