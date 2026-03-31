@@ -118,7 +118,7 @@ namespace Tools
 
             if (collisionWorld.CastRay(raycastInput, out RaycastHit hit))
             {
-                if (entityManager.HasComponent<Unit>(hit.Entity))
+                if (entityManager.HasComponent<Selection>(hit.Entity))
                 {
                     entityManager.SetComponentEnabled<Selection>(hit.Entity, true);
                     var selection = entityManager.GetComponentData<Selection>(hit.Entity);
@@ -135,6 +135,7 @@ namespace Tools
             DeselectAll();
             var allUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<LocalTransform, Unit>()
+                .WithPresent<Selection>()
                 .Build(entityManager);
 
             var selectionRect = GetSelectionRect();
