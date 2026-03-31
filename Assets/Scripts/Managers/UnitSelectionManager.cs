@@ -15,12 +15,17 @@ namespace Tools
         private MouseWorldPosition _mouseWorldPosition;
         [SerializeField]
         private float _minMultipleSelection = 40;
+        [SerializeField]
+        private float _unitSpacing = 2;
+        [SerializeField]
+        private float _circleSpacing = 3;
+        
         
         public event Action OnStartSelection;
         public event Action OnEndSelection;
 
         private Vector2 _selectionStartPosition;
-        
+
         public static int UnitLayer => LayerMask.NameToLayer("Unit");
         
         private void Update()
@@ -46,12 +51,11 @@ namespace Tools
                 OnEndSelection?.Invoke();
             }
             
-            if (!Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1))
             {
-                return;
+                SetUnitsTargetPosition(_mouseWorldPosition.GetPositon());
             }
 
-            SetUnitTargetPosition(_mouseWorldPosition.GetPositon());
         }
 
         public Rect GetSelectionRect()
@@ -121,16 +125,6 @@ namespace Tools
         private void UpdateMultipleSelectedUnits()
         {
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            //
-            // var selectedUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
-            //     .WithAll<Selection>()
-            //     .Build(entityManager);
-            //
-            // var selectedUnitsEntities = selectedUnitsQuery.ToEntityArray(Allocator.Temp);
-            // for (int i = 0; i < selectedUnitsEntities.Length; i++)
-            // {
-            //     entityManager.SetComponentEnabled<Selection>(selectedUnitsEntities[i], false);
-            // }
             DeselectAll();
             var allUnitsQuery = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<LocalTransform, Unit>()
@@ -151,7 +145,7 @@ namespace Tools
         }
 
         
-        private void SetUnitTargetPosition(Vector3 position)
+        private void SetUnitsTargetPosition(Vector3 position)
         {
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var entityQuery = new EntityQueryBuilder(Allocator.Temp)
@@ -159,13 +153,71 @@ namespace Tools
                 .Build(entityManager);
             
             var unitMovers = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
+            var positions = GetRadialPositions(position, unitMovers.Length);
             for (int i = 0; i < unitMovers.Length; i++)
             {
                 var mover = unitMovers[i];
-                mover.TargetPosition = position;
+                mover.TargetPosition = positions[i];
                 unitMovers[i] = mover;
             }
             entityQuery.CopyFromComponentDataArray(unitMovers);
         }
+        
+        private Vector3[] GetRadialPositions(Vector3 centerPosition, int unitCount)
+        {
+            if (unitCount <= 0) return Array.Empty<Vector3>();
+    
+            // Вычисляем количество кругов
+            int circleCount = Mathf.CeilToInt((Mathf.Sqrt(8 * unitCount + 1) - 1) / 2);
+    
+            var positions = new Vector3[unitCount];
+            int unitIndex = 0;
+    
+            for (int circle = 0; circle < circleCount && unitIndex < unitCount; circle++)
+            {
+                float radius = circle == 0 ? 0 : (circle * _circleSpacing);
+        
+                int unitsInThisCircle;
+                if (circle == 0)
+                {
+                    // Центральный круг - 1 юнит
+                    unitsInThisCircle = Mathf.Min(1, unitCount - unitIndex);
+                }
+                else
+                {
+                    // Внешние круги
+                    int maxInCircle = Mathf.FloorToInt(2 * Mathf.PI * radius / _unitSpacing);
+                    unitsInThisCircle = Mathf.Min(maxInCircle, unitCount - unitIndex);
+                }
+        
+                for (int i = 0; i < unitsInThisCircle && unitIndex < unitCount; i++)
+                {
+                    Vector3 targetPos;
+            
+                    if (circle == 0)
+                    {
+                        // Центральный юнит
+                        targetPos = centerPosition;
+                    }
+                    else
+                    {
+                        // Юниты на круге
+                        float angle = (2f * Mathf.PI * i) / unitsInThisCircle;
+                        targetPos = centerPosition + new Vector3(
+                            Mathf.Cos(angle) * radius,
+                            0,
+                            Mathf.Sin(angle) * radius
+                        );
+                    }
+            
+                    positions[unitIndex] = targetPos;
+                    unitIndex++;
+                }
+            }
+    
+            return positions;
+        }
+        
+        
     }
 }
