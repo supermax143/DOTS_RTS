@@ -219,6 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.FindTargetAuthoring
   FindRadius: 0
   TargetFaction: 0
+  CooldownTime: 0
 --- !u!114 &5806132402297972559
 MonoBehaviour:
   m_ObjectHideFlags: 0

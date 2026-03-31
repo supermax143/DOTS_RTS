@@ -11,6 +11,9 @@ namespace DefaultNamespace
         [SerializeField]
         public UnitAuthoring.Faction TargetFaction;
         
+        [SerializeField]
+        public float CooldownTime;
+        
         public class Baker : Baker<FindTargetAuthoring>
         {
             public override void Bake(FindTargetAuthoring authoring)
@@ -20,6 +23,8 @@ namespace DefaultNamespace
                 {
                     FindRadius = authoring.FindRadius,
                     TargetFaction = authoring.TargetFaction,
+                    CooldownTime = authoring.CooldownTime,
+                    CurrentCooldown = 0f,
                 });
             }
         }
@@ -29,5 +34,7 @@ namespace DefaultNamespace
     {
         public float FindRadius;
         public UnitAuthoring.Faction TargetFaction;
+        public float CooldownTime;
+        public float CurrentCooldown;
     }
 }
