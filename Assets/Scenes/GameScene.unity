@@ -342,6 +342,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tools.UnitSelectionManager
   _mouseWorldPosition: {fileID: 1672329047}
+  _minMultipleSelection: 40
+  _unitSpacing: 1
+  _circleSpacing: 2
 --- !u!4 &660664271
 Transform:
   m_ObjectHideFlags: 0

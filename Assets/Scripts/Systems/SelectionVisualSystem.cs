@@ -13,17 +13,22 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var selection in SystemAPI.Query<RefRW<Selection>>())
+
+            foreach (var selection in SystemAPI.Query<RefRW<Selection>>().WithPresent<Selection>())
             {
-                var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
-                transform.ValueRW.Scale = selection.ValueRO.VisualScale;
+                if (selection.ValueRO.OnSelected)
+                {
+                    var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
+                    transform.ValueRW.Scale = selection.ValueRO.VisualScale;
+                }
+                
+                if (selection.ValueRO.OnDeselected)
+                {
+                    var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
+                    transform.ValueRW.Scale = 0;
+                }
             }
             
-            foreach (var selection in SystemAPI.Query<RefRW<Selection>>().WithDisabled<Selection>())
-            {
-                var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
-                transform.ValueRW.Scale = 0;
-            }
         }
     }
 }

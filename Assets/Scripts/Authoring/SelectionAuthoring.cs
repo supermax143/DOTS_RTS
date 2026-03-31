@@ -31,4 +31,7 @@ public struct Selection : IComponentData, IEnableableComponent
 {
     public Entity Visual;
     public float VisualScale;
+
+    public bool OnSelected;
+    public bool OnDeselected;
 }

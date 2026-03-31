@@ -86,9 +86,13 @@ namespace Tools
                 .Build(entityManager);
             
             var selectedUnitsEntities = selectedUnitsQuery.ToEntityArray(Allocator.Temp);
+            var selections = selectedUnitsQuery.ToComponentDataArray<Selection>(Allocator.Temp);
             for (int i = 0; i < selectedUnitsEntities.Length; i++)
             {
                 entityManager.SetComponentEnabled<Selection>(selectedUnitsEntities[i], false);
+                var selection = selections[i];
+                selection.OnDeselected = true;
+                entityManager.SetComponentData(selectedUnitsEntities[i], selection);
             }
         }
         
@@ -117,6 +121,9 @@ namespace Tools
                 if (entityManager.HasComponent<Unit>(hit.Entity))
                 {
                     entityManager.SetComponentEnabled<Selection>(hit.Entity, true);
+                    var selection = entityManager.GetComponentData<Selection>(hit.Entity);
+                    selection.OnSelected = true;
+                    entityManager.SetComponentData(hit.Entity, selection);
                 }
             }
         }
@@ -133,6 +140,7 @@ namespace Tools
             var selectionRect = GetSelectionRect();
             var allTransforms = allUnitsQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
             var allUnitsEntities = allUnitsQuery.ToEntityArray(Allocator.Temp);
+            
             for (int i = 0; i < allTransforms.Length; i++)
             {
                 var unitTransform = allTransforms[i];
@@ -141,6 +149,9 @@ namespace Tools
                     continue;
                 }
                 entityManager.SetComponentEnabled<Selection>(allUnitsEntities[i], true);
+                var selection = entityManager.GetComponentData<Selection>(allUnitsEntities[i]);
+                selection.OnSelected = true;
+                entityManager.SetComponentData(allUnitsEntities[i], selection);
             }
         }
 
