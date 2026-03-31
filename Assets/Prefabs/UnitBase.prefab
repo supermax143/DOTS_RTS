@@ -105,6 +105,8 @@ GameObject:
   - component: {fileID: 5967257142620172500}
   - component: {fileID: 7560384556059887480}
   - component: {fileID: 5806132402297972559}
+  - component: {fileID: 5501303307857603986}
+  - component: {fileID: 9060582970346732541}
   m_Layer: 6
   m_Name: UnitBase
   m_TagString: Untagged
@@ -233,3 +235,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.TargetAuthoring
   TargetEntity: {fileID: 0}
+--- !u!114 &5501303307857603986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194216278878858284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39f12a25325b514896872c7ef10f9d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.HealthAuthoring
+  MaxHealth: 0
+--- !u!114 &9060582970346732541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194216278878858284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring

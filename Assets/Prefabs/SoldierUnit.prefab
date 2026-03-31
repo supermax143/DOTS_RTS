@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoldierUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 5501303307857603986, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: MaxHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7560384556059887480, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: FindRadius
       value: 7

@@ -14,6 +14,7 @@ namespace DefaultNamespace
         {
             state.RequireForUpdate<ShootAttack>();
             state.RequireForUpdate<Target>();
+            state.RequireForUpdate<Health>();
         }
 
         [BurstCompile]
@@ -26,36 +27,42 @@ namespace DefaultNamespace
         {
             foreach (var (shootAttack, target, transform, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRO<LocalTransform>>().WithEntityAccess())
             {
-                // Уменьшаем кулдаун
                 if (shootAttack.ValueRW.CurrentCooldown > 0)
                 {
                     shootAttack.ValueRW.CurrentCooldown -= SystemAPI.Time.DeltaTime;
                     continue;
                 }
                 
-                // Проверяем, есть ли цель
                 if (target.ValueRO.TargetEntity == Entity.Null)
                     continue;
                 
-                // Проверяем, жива ли цель
                 if (!SystemAPI.HasComponent<Unit>(target.ValueRO.TargetEntity))
                     continue;
                 
-                // Получаем позицию цели
                 var targetTransform = SystemAPI.GetComponentRO<LocalTransform>(target.ValueRO.TargetEntity);
                 var distance = math.distance(transform.ValueRO.Position, targetTransform.ValueRO.Position);
                 
-                // Проверяем дистанцию атаки
                 if (distance > shootAttack.ValueRO.Range)
                     continue;
                 
-                // Выполняем выстрел
                 Debug.Log($"Entity {entity.Index} shoots at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
-                
-                // Здесь можно добавить логику урона
-                // Например, добавить компонент Damage к цели или вызвать систему урона
-                
-                // Устанавливаем кулдаун
+              
+                // Наносим урон цели
+                if (SystemAPI.HasComponent<Health>(target.ValueRO.TargetEntity))
+                {
+                    var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
+                    targetHealth.ValueRW.CurrentHealth -= shootAttack.ValueRO.Damage;
+                    
+                    Debug.Log($"Target {target.ValueRO.TargetEntity.Index} health: {targetHealth.ValueRW.CurrentHealth}/{targetHealth.ValueRW.MaxHealth}");
+                    
+                    // Если здоровье <= 0, можно добавить логику уничтожения цели
+                    if (targetHealth.ValueRW.CurrentHealth <= 0)
+                    {
+                        Debug.Log($"Target {target.ValueRO.TargetEntity.Index} destroyed!");
+                        // Здесь можно добавить уничтожение сущности или компонент Dead
+                    }
+                }
+              
                 shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
             }
         }

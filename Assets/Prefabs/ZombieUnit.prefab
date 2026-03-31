@@ -16,10 +16,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 85cd5279f313d294c8d4eb59ece3cb5b, type: 2}
+    - target: {fileID: 3426675436753466294, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3881417830349927083, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b6815ab17cf31b645b33d7e67d00ce14, type: 2}
+    - target: {fileID: 5501303307857603986, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: MaxHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5967257142620172500, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: UnitFaction
       value: 1

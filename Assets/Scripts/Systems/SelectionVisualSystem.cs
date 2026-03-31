@@ -16,17 +16,18 @@ namespace Systems
 
             foreach (var selection in SystemAPI.Query<RefRW<Selection>>().WithPresent<Selection>())
             {
+                if (selection.ValueRO.OnDeselected)
+                {
+                    var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
+                    transform.ValueRW.Scale = 0;
+                }
+                
                 if (selection.ValueRO.OnSelected)
                 {
                     var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
                     transform.ValueRW.Scale = selection.ValueRO.VisualScale;
                 }
                 
-                if (selection.ValueRO.OnDeselected)
-                {
-                    var transform = SystemAPI.GetComponentRW<LocalTransform>(selection.ValueRO.Visual);
-                    transform.ValueRW.Scale = 0;
-                }
             }
             
         }

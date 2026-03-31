@@ -66,9 +66,7 @@ namespace DefaultNamespace
                         
                         if (targetUnit.ValueRO.UnitFaction == findTarget.ValueRO.TargetFaction)
                         {
-                            Debug.Log($"Entity {entity.Index} found target {hitEntity.Index} with faction {findTarget.ValueRO.TargetFaction}");
                             target.ValueRW.TargetEntity = hitEntity;
-                            
                             break;
                         }
                     }
