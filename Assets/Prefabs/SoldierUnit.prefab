@@ -102,6 +102,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoldierUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 7560384556059887480, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: FindRadius
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560384556059887480, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: TargetFaction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

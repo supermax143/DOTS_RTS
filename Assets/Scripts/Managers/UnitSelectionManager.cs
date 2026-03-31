@@ -5,6 +5,7 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using Utils;
 using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace Tools
@@ -26,7 +27,6 @@ namespace Tools
 
         private Vector2 _selectionStartPosition;
 
-        public static int UnitLayer => LayerMask.NameToLayer("Unit");
         
         private void Update()
         {
@@ -112,7 +112,7 @@ namespace Tools
                 Filter = new CollisionFilter()
                 {
                     BelongsTo = ~0u,
-                    CollidesWith = 1u << UnitLayer
+                    CollidesWith = 1u << Layers.Unit
                 }
             };
 
