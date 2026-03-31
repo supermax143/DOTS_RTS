@@ -152,6 +152,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2194216278878858284, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6996654513006332668}
+    - targetCorrespondingSourceObject: {fileID: 2194216278878858284, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7665591035776941167}
   m_SourcePrefab: {fileID: 100100000, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
 --- !u!1 &4469456543746826314 stripped
 GameObject:
@@ -172,6 +175,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.SelectionAuthoring
   Visual: {fileID: 8143726547512104570}
   VisualScale: 1.2
+--- !u!114 &7665591035776941167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469456543746826314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c203c7ab7ead8fe4599a11b725ed00fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.FriendlyAuthoring
 --- !u!4 &6024048660142897610 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}

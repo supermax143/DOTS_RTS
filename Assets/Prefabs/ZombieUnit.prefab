@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b6815ab17cf31b645b33d7e67d00ce14, type: 2}
+    - target: {fileID: 5967257142620172500, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      propertyPath: UnitFaction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -63,5 +67,25 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2194216278878858284, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3031188509528283913}
   m_SourcePrefab: {fileID: 100100000, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+--- !u!1 &8595239303012869807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2194216278878858284, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+  m_PrefabInstance: {fileID: 7582655015034735235}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3031188509528283913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8595239303012869807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816f9330984b8e94cbd20fe6baba97e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.EnemyAuthoring
