@@ -139,7 +139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7560384556059887480, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: FindRadius
-      value: 7
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7560384556059887480, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       propertyPath: CooldownTime
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.ShootAttackAuthoring
   CooldownTime: 0.2
   Damage: 10
-  Range: 7
+  Range: 12
   BulletSpeed: 70
   ShootTransform: {fileID: 209553176367846556}
 --- !u!4 &6024048660142897610 stripped
