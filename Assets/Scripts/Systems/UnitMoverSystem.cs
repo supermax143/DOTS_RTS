@@ -7,15 +7,17 @@ using Unity.Transforms;
 
 namespace Systems
 {
+    
     public partial struct UnitMoverSystem : ISystem
     {
+        public const float STOP_THRESHOLD = 1;
+    
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var job = new UnitMoverJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
-                StopThreshold = 1f
             };
             job.ScheduleParallel();
 
@@ -38,7 +40,6 @@ namespace Systems
     public partial struct UnitMoverJob : IJobEntity
     {
         public float DeltaTime;
-        public float StopThreshold;
         
         public void Execute(ref LocalTransform transform, in UnitMover mover, ref PhysicsVelocity velocity, in Target target)
         {
@@ -46,7 +47,7 @@ namespace Systems
             var moveDir = math.normalize(targetPosition - transform.Position);
             var targetRotation = quaternion.LookRotation(moveDir, math.up());
             
-            if (math.distance(transform.Position, targetPosition) < StopThreshold)
+            if (math.distance(transform.Position, targetPosition) < UnitMoverSystem.STOP_THRESHOLD)
             {
                 if (target.TargetEntity == Entity.Null)
                 {

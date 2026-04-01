@@ -211,3 +211,6 @@ if (component.ValueRW.CurrentCooldown > 0)
 // Выполнение действия
 component.ValueRW.CurrentCooldown = component.ValueRW.CooldownTime;
 ```
+
+### 8. Пример с кулдауном
+-
