@@ -14,7 +14,6 @@ namespace DefaultNamespace
         {
             state.RequireForUpdate<ShootAttack>();
             state.RequireForUpdate<Target>();
-            state.RequireForUpdate<Health>();
         }
 
         [BurstCompile]
@@ -25,6 +24,8 @@ namespace DefaultNamespace
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            var ecb = new EntityCommandBuffer(Allocator.TempJob);
+            
             foreach (var (shootAttack, target, transform, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRO<LocalTransform>>().WithEntityAccess())
             {
                 if (shootAttack.ValueRW.CurrentCooldown > 0)
@@ -45,26 +46,32 @@ namespace DefaultNamespace
                 if (distance > shootAttack.ValueRO.Range)
                     continue;
                 
-                Debug.Log($"Entity {entity.Index} shoots at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
-              
-                // Наносим урон цели
-                if (SystemAPI.HasComponent<Health>(target.ValueRO.TargetEntity))
-                {
-                    var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
-                    targetHealth.ValueRW.CurrentHealth -= shootAttack.ValueRO.Damage;
-                    
-                    Debug.Log($"Target {target.ValueRO.TargetEntity.Index} health: {targetHealth.ValueRW.CurrentHealth}/{targetHealth.ValueRW.MaxHealth}");
-                    
-                    // Если здоровье <= 0, можно добавить логику уничтожения цели
-                    if (targetHealth.ValueRW.CurrentHealth <= 0)
-                    {
-                        Debug.Log($"Target {target.ValueRO.TargetEntity.Index} destroyed!");
-                        // Здесь можно добавить уничтожение сущности или компонент Dead
-                    }
-                }
-              
-                shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
+                // Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
+                //
+                // // Создаем пулю
+                // var bullet = ecb.CreateEntity();
+                // ecb.AddComponent(bullet, new Bullet
+                // {
+                //     Speed = 10f, // Стандартная скорость пули
+                //     Damage = shootAttack.ValueRO.Damage
+                // });
+                //
+                // ecb.AddComponent(bullet, new Target
+                // {
+                //     TargetEntity = target.ValueRO.TargetEntity
+                // });
+                // ecb.AddComponent(bullet, new LocalTransform
+                // {
+                //     Position = transform.ValueRO.Position,
+                //     Rotation = quaternion.identity,
+                //     Scale = 0.2f
+                // });
+                //
+                // shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
             }
+            
+            ecb.Playback(state.EntityManager);
+            ecb.Dispose();
         }
     }
 }
