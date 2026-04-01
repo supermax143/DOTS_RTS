@@ -9,17 +9,6 @@ namespace DefaultNamespace
 {
     public partial struct ShootAttackSystem : ISystem
     {
-        [BurstCompile]
-        public void OnCreate(ref SystemState state)
-        {
-            state.RequireForUpdate<ShootAttack>();
-            state.RequireForUpdate<Target>();
-        }
-
-        [BurstCompile]
-        public void OnDestroy(ref SystemState state)
-        {
-        }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
