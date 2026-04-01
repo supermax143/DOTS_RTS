@@ -46,8 +46,8 @@ namespace DefaultNamespace
                 if (distance > shootAttack.ValueRO.Range)
                     continue;
                 
-                // Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
-                //
+                Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
+                
                 // // Создаем пулю
                 // var bullet = ecb.CreateEntity();
                 // ecb.AddComponent(bullet, new Bullet

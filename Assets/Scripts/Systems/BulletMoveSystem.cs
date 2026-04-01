@@ -50,14 +50,26 @@ namespace DefaultNamespace
                 // Вычисляем направление к цели
                 var direction = math.normalize(targetPos - currentPos);
                 
+                var distanceBefore = math.distance(currentPos, targetPos);
+                
                 // Перемещаем пулю
                 var moveDistance = bullet.ValueRO.Speed * SystemAPI.Time.DeltaTime;
                 var newPos = currentPos + direction * moveDistance;
+                var distanceAfter = math.distance(newPos, targetPos);
+                
+                if (distanceAfter >= distanceBefore)
+                {
+                    newPos = targetPos;
+                    distanceAfter = 0;
+                }
+                
                 transform.ValueRW.Position = newPos;
                 
                 // Проверяем, достигла ли пуля цели
-                var distance = math.distance(newPos, targetPos);
-                if (distance <= 0.1f) // Пороговое расстояние для попадания
+
+                
+                var checkingDistance = 0.0001f;
+                if (distanceAfter <= checkingDistance) // Пороговое расстояние для попадания
                 {
                     // Наносим урон цели
                     if (SystemAPI.HasComponent<Health>(target.ValueRO.TargetEntity))
