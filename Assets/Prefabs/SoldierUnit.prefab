@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3267484431394552960
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209553176367846556}
+  m_Layer: 6
+  m_Name: ShootPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &209553176367846556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3267484431394552960}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.92, z: 1.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6024048660142897610}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8143726547512104570
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +195,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       insertIndex: 0
       addedObject: {fileID: 8931350511835006642}
+    - targetCorrespondingSourceObject: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 209553176367846556}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2194216278878858284, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}
       insertIndex: -1
@@ -222,6 +256,7 @@ MonoBehaviour:
   Damage: 10
   Range: 7
   BulletSpeed: 70
+  ShootTransform: {fileID: 209553176367846556}
 --- !u!4 &6024048660142897610 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}

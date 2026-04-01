@@ -15,7 +15,7 @@ namespace Systems
             var job = new UnitMoverJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
-                StopThreshold = 1
+                StopThreshold = 1f
             };
             job.ScheduleParallel();
 
@@ -40,7 +40,7 @@ namespace Systems
         public float DeltaTime;
         public float StopThreshold;
         
-        public void Execute(ref LocalTransform transform, in UnitMover mover, ref PhysicsVelocity velocity)
+        public void Execute(ref LocalTransform transform, in UnitMover mover, ref PhysicsVelocity velocity, in Target target)
         {
             var targetPosition = mover.TargetPosition;
             var moveDir = math.normalize(targetPosition - transform.Position);
@@ -48,13 +48,22 @@ namespace Systems
             
             if (math.distance(transform.Position, targetPosition) < StopThreshold)
             {
-                transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
+                if (target.TargetEntity == Entity.Null)
+                {
+                    transform.Rotation =
+                        math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
+                }
+
                 velocity.Linear = float3.zero;
                 velocity.Angular = float3.zero;
                 return;
             }
+
+            if (target.TargetEntity == Entity.Null)
+            {
+                transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
+            }
             
-            transform.Rotation = math.slerp(transform.Rotation, targetRotation, DeltaTime * mover.RotationSpeed);
             velocity.Linear = moveDir * mover.MoveSpeed;
             velocity.Angular = float3.zero;
         }

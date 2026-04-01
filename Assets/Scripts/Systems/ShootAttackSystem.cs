@@ -26,7 +26,7 @@ namespace DefaultNamespace
         {
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
             
-            foreach (var (shootAttack, target, transform, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRO<LocalTransform>>().WithEntityAccess())
+            foreach (var (shootAttack, target, transform, unitMover, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRW<LocalTransform>,  RefRO<UnitMover>>().WithEntityAccess())
             {
                 if (shootAttack.ValueRW.CurrentCooldown > 0)
                 {
@@ -43,8 +43,13 @@ namespace DefaultNamespace
                 var targetTransform = SystemAPI.GetComponentRO<LocalTransform>(target.ValueRO.TargetEntity);
                 var distance = math.distance(transform.ValueRO.Position, targetTransform.ValueRO.Position);
                 
+                var moveDir = math.normalize(targetTransform.ValueRO.Position - transform.ValueRO.Position);
+                var targetRotation = quaternion.LookRotation(moveDir, math.up());
+                transform.ValueRW.Rotation = targetRotation;
+                
                 if (distance > shootAttack.ValueRO.Range)
                     continue;
+
                 
                 Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
 
@@ -52,10 +57,12 @@ namespace DefaultNamespace
                 
                 // Создаем пулю
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReference.Bullet);
+
+                var bulletSpawnPosition = transform.ValueRO.TransformPoint(shootAttack.ValueRO.ShootLocalPosition);
                 
                 // Устанавливаем позицию пули
                 state.EntityManager.SetComponentData(bulletEntity,
-                    LocalTransform.FromPosition(transform.ValueRO.Position));
+                    LocalTransform.FromPosition(bulletSpawnPosition));
                 
                 // Устанавливаем цель для пули
                 var targetComponent = SystemAPI.GetComponentRW<Target>(bulletEntity);

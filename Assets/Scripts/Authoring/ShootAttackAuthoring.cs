@@ -1,21 +1,17 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public class ShootAttackAuthoring : MonoBehaviour
     {
-        [SerializeField]
         public float CooldownTime;
-        
-        [SerializeField]
         public float Damage;
-        
-        [SerializeField]
         public float Range;
-        
-        [SerializeField]
         public float BulletSpeed;
+        public Transform ShootTransform;
+        
         
         public class Baker : Baker<ShootAttackAuthoring>
         {
@@ -29,6 +25,7 @@ namespace DefaultNamespace
                     Range = authoring.Range,
                     BulletSpeed = authoring.BulletSpeed,
                     CurrentCooldown = 0f,
+                    ShootLocalPosition = authoring.ShootTransform.localPosition
                 });
             }
         }
@@ -41,5 +38,6 @@ namespace DefaultNamespace
         public float Range;
         public float BulletSpeed;
         public float CurrentCooldown;
+        public float3 ShootLocalPosition;
     }
 }

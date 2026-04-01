@@ -52,6 +52,8 @@ namespace DefaultNamespace
                 hitList.Clear();
                 collisionWorld.OverlapSphere(sphereInput.Position, sphereInput.MaxDistance, ref hitList, sphereInput.Filter);
                 
+                target.ValueRW.TargetEntity = Entity.Null;
+                
                 for (int i = 0; i < hitList.Length; i++)
                 {
                     var hit = hitList[i];
@@ -70,7 +72,9 @@ namespace DefaultNamespace
                             break;
                         }
                     }
+                    
                 }
+
             }
         }
     }
