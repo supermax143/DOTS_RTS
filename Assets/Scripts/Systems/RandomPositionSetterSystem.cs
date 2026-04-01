@@ -24,7 +24,7 @@ namespace DefaultNamespace
                 var distance = math.distance(currentPos, targetPos);
                 
                 // Если цель достигнута (или не задана), устанавливаем новую случайную позицию
-                if (distance < UnitMoverSystem.STOP_THRESHOLD)
+                if (UnitMoverSystem.TargetReached(distance))
                 {
                     // Генерируем случайное направление
                     var randomDirection = new float2(
@@ -62,5 +62,7 @@ namespace DefaultNamespace
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
+
+      
     }
 }

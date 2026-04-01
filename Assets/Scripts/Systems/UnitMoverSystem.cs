@@ -1,17 +1,23 @@
 ﻿using DefaultNamespace;
+using Systems;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 
+
 namespace Systems
 {
     
     public partial struct UnitMoverSystem : ISystem
     {
-        public const float STOP_THRESHOLD = 1;
+        private const float STOP_THRESHOLD = 1;
     
+        public static bool TargetReached(float distance) 
+            => distance < STOP_THRESHOLD;
+
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -36,6 +42,7 @@ namespace Systems
         }
     }
 
+
     [BurstCompile]
     public partial struct UnitMoverJob : IJobEntity
     {
@@ -47,7 +54,7 @@ namespace Systems
             var moveDir = math.normalize(targetPosition - transform.Position);
             var targetRotation = quaternion.LookRotation(moveDir, math.up());
             
-            if (math.distance(transform.Position, targetPosition) < UnitMoverSystem.STOP_THRESHOLD)
+            if (UnitMoverSystem.TargetReached(math.distance(transform.Position, targetPosition)))
             {
                 if (target.TargetEntity == Entity.Null)
                 {

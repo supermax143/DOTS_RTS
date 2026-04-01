@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.ShootAttackAuthoring
   CooldownTime: 0.2
-  Damage: 0
+  Damage: 7
   Range: 12
   BulletSpeed: 70
   ShootTransform: {fileID: 209553176367846556}
