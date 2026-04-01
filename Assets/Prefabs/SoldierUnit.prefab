@@ -218,9 +218,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b204dc11255504e8e3b47975e928cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.ShootAttackAuthoring
-  CooldownTime: 0.3
+  CooldownTime: 0.2
   Damage: 10
   Range: 7
+  BulletSpeed: 70
 --- !u!4 &6024048660142897610 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8353164974957999532, guid: fed8141447feb6d4c999f02436acd1a7, type: 3}

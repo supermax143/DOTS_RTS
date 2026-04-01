@@ -56,9 +56,15 @@ namespace DefaultNamespace
                 // Устанавливаем позицию пули
                 state.EntityManager.SetComponentData(bulletEntity,
                     LocalTransform.FromPosition(transform.ValueRO.Position));
+                
                 // Устанавливаем цель для пули
                 var targetComponent = SystemAPI.GetComponentRW<Target>(bulletEntity);
                 targetComponent.ValueRW.TargetEntity = target.ValueRO.TargetEntity;
+                
+                // Устанавливаем урон и скорость пули из ShootAttack
+                var bulletComponent = SystemAPI.GetComponentRW<Bullet>(bulletEntity);
+                bulletComponent.ValueRW.Damage = shootAttack.ValueRO.Damage;
+                bulletComponent.ValueRW.Speed = shootAttack.ValueRO.BulletSpeed;
                 
                 
                 

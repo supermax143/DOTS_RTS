@@ -14,6 +14,9 @@ namespace DefaultNamespace
         [SerializeField]
         public float Range;
         
+        [SerializeField]
+        public float BulletSpeed;
+        
         public class Baker : Baker<ShootAttackAuthoring>
         {
             public override void Bake(ShootAttackAuthoring authoring)
@@ -24,6 +27,7 @@ namespace DefaultNamespace
                     CooldownTime = authoring.CooldownTime,
                     Damage = authoring.Damage,
                     Range = authoring.Range,
+                    BulletSpeed = authoring.BulletSpeed,
                     CurrentCooldown = 0f,
                 });
             }
@@ -35,6 +39,7 @@ namespace DefaultNamespace
         public float CooldownTime;
         public float Damage;
         public float Range;
+        public float BulletSpeed;
         public float CurrentCooldown;
     }
 }
