@@ -47,27 +47,22 @@ namespace DefaultNamespace
                     continue;
                 
                 Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
+
+                var entitiesReference = SystemAPI.GetSingleton<EntitiesReference>();
                 
-                // // Создаем пулю
-                // var bullet = ecb.CreateEntity();
-                // ecb.AddComponent(bullet, new Bullet
-                // {
-                //     Speed = 10f, // Стандартная скорость пули
-                //     Damage = shootAttack.ValueRO.Damage
-                // });
-                //
-                // ecb.AddComponent(bullet, new Target
-                // {
-                //     TargetEntity = target.ValueRO.TargetEntity
-                // });
-                // ecb.AddComponent(bullet, new LocalTransform
-                // {
-                //     Position = transform.ValueRO.Position,
-                //     Rotation = quaternion.identity,
-                //     Scale = 0.2f
-                // });
-                //
-                // shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
+                // Создаем пулю
+                var bulletEntity = state.EntityManager.Instantiate(entitiesReference.Bullet);
+                
+                // Устанавливаем позицию пули
+                state.EntityManager.SetComponentData(bulletEntity,
+                    LocalTransform.FromPosition(transform.ValueRO.Position));
+                // Устанавливаем цель для пули
+                var targetComponent = SystemAPI.GetComponentRW<Target>(bulletEntity);
+                targetComponent.ValueRW.TargetEntity = target.ValueRO.TargetEntity;
+                
+                
+                
+                shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
             }
             
             ecb.Playback(state.EntityManager);
