@@ -24,8 +24,12 @@ namespace DefaultNamespace
                 
                 var enemy = state.EntityManager.Instantiate(entitiesReference.Zombie);
                 state.EntityManager.SetComponentData(enemy, LocalTransform.FromPosition(spawner.ValueRO.SpawnPosition));
-                
+
+                var mover = SystemAPI.GetComponentRW<UnitMover>(enemy);
+                mover.ValueRW.TargetPosition = spawner.ValueRO.SpawnPosition;
+                    
                 Debug.Log($"Spawned enemy at position {spawner.ValueRO.SpawnPosition}");
+                
                 
                 spawner.ValueRW.CurrentCooldown = spawner.ValueRO.SpawnInterval;
             }
