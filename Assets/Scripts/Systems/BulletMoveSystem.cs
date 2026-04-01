@@ -47,19 +47,27 @@ namespace DefaultNamespace
                 var currentPos = transform.ValueRO.Position;
                 var targetPos = targetTransform.ValueRO.Position;
                 
-                // Вычисляем направление к цели
-                var direction = math.normalize(targetPos - currentPos);
+                // Проверяем, есть ли у цели компонент AimPosition
+                float3 actualTargetPos = targetPos;
+                if (SystemAPI.HasComponent<AimPosition>(target.ValueRO.TargetEntity))
+                {
+                    var aimPosition = SystemAPI.GetComponentRO<AimPosition>(target.ValueRO.TargetEntity);
+                    actualTargetPos = targetTransform.ValueRO.TransformPoint(aimPosition.ValueRO.AimLocalPosition);
+                }
                 
-                var distanceBefore = math.distance(currentPos, targetPos);
+                // Вычисляем направление к цели с учетом AimPosition
+                var direction = math.normalize(actualTargetPos - currentPos);
+                
+                var distanceBefore = math.distance(currentPos, actualTargetPos);
                 
                 // Перемещаем пулю
                 var moveDistance = bullet.ValueRO.Speed * SystemAPI.Time.DeltaTime;
                 var newPos = currentPos + direction * moveDistance;
-                var distanceAfter = math.distance(newPos, targetPos);
+                var distanceAfter = math.distance(newPos, actualTargetPos);
                 
                 if (distanceAfter >= distanceBefore)
                 {
-                    newPos = targetPos;
+                    newPos = actualTargetPos;
                     distanceAfter = 0;
                 }
                 
