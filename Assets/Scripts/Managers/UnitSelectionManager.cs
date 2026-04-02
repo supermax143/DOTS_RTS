@@ -161,18 +161,21 @@ namespace Tools
         {
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var entityQuery = new EntityQueryBuilder(Allocator.Temp)
-                .WithAll<UnitMover, Selection>()
+                .WithAll<Selection>()
+                .WithPresent<MoveOverride>()
                 .Build(entityManager);
-            
-            var unitMovers = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
-            var positions = GetRadialPositions(position, unitMovers.Length);
-            for (int i = 0; i < unitMovers.Length; i++)
+
+            var entities = entityQuery.ToEntityArray(Allocator.Temp);
+            var moveOverrides = entityQuery.ToComponentDataArray<MoveOverride>(Allocator.Temp);
+            var positions = GetRadialPositions(position, moveOverrides.Length);
+            for (int i = 0; i < moveOverrides.Length; i++)
             {
-                var mover = unitMovers[i];
+                var mover = moveOverrides[i];
                 mover.TargetPosition = positions[i];
-                unitMovers[i] = mover;
+                moveOverrides[i] = mover;
+                entityManager.SetComponentEnabled<MoveOverride>(entities[i], true);
             }
-            entityQuery.CopyFromComponentDataArray(unitMovers);
+            entityQuery.CopyFromComponentDataArray(moveOverrides);
         }
         
         private Vector3[] GetRadialPositions(Vector3 centerPosition, int unitCount)
