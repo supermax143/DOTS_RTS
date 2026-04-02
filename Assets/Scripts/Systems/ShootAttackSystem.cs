@@ -47,7 +47,7 @@ namespace DefaultNamespace
                 // Создаем пулю
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReference.Bullet);
 
-                var bulletSpawnPosition = transform.ValueRO.TransformPoint(shootAttack.ValueRO.ShootLocalPosition);
+                var bulletSpawnPosition = transform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletLocalSpawnPosition);
                 
                 // Устанавливаем позицию пули
                 state.EntityManager.SetComponentData(bulletEntity,
@@ -62,9 +62,8 @@ namespace DefaultNamespace
                 bulletComponent.ValueRW.Damage = shootAttack.ValueRO.Damage;
                 bulletComponent.ValueRW.Speed = shootAttack.ValueRO.BulletSpeed;
                
-                
-                // Устанавливаем флаг выстрела для спавна ShootLight
-                shootAttack.ValueRW.OnShoot = true;
+                shootAttack.ValueRW.OnShoot.Triggered = true;
+                shootAttack.ValueRW.OnShoot.ShootPosition = bulletSpawnPosition;
                
                 shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
             }

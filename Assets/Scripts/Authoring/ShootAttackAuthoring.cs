@@ -25,7 +25,7 @@ namespace DefaultNamespace
                     Range = authoring.Range,
                     BulletSpeed = authoring.BulletSpeed,
                     CurrentCooldown = 0f,
-                    ShootLocalPosition = authoring.ShootTransform.localPosition
+                    BulletLocalSpawnPosition = authoring.ShootTransform.localPosition
                 });
             }
         }
@@ -38,8 +38,12 @@ namespace DefaultNamespace
         public float Range;
         public float BulletSpeed;
         public float CurrentCooldown;
-        public float3 ShootLocalPosition;
-
-        public bool OnShoot;
+        public float3 BulletLocalSpawnPosition;
+        public ShootEvent OnShoot;
+        public struct ShootEvent
+        {
+            public bool Triggered;
+            public float3 ShootPosition;
+        };
     }
 }

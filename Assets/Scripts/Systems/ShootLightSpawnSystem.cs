@@ -16,19 +16,18 @@ namespace DefaultNamespace
             foreach (var (shootAttack, transform, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<LocalTransform>>().WithEntityAccess())
             {
                 // Проверяем флаг выстрела
-                if (shootAttack.ValueRO.OnShoot)
+                if (!shootAttack.ValueRO.OnShoot.Triggered)
                 {
-                    // Спавним ShootLight эффект выстрела
-                    if (entitiesReference.ShootLight != Entity.Null)
-                    {
-                        var shootLightEntity = state.EntityManager.Instantiate(entitiesReference.ShootLight);
-                        
-                        var bulletSpawnPosition = transform.ValueRO.TransformPoint(shootAttack.ValueRO.ShootLocalPosition);
-                        
-                        // Устанавливаем позицию ShootLight
-                        state.EntityManager.SetComponentData(shootLightEntity,
-                            LocalTransform.FromPosition(bulletSpawnPosition));
-                    }
+                    continue;
+                }
+                // Спавним ShootLight эффект выстрела
+                if (entitiesReference.ShootLight != Entity.Null)
+                {
+                    var shootLightEntity = state.EntityManager.Instantiate(entitiesReference.ShootLight);
+                    
+                    // Устанавливаем позицию ShootLight
+                    state.EntityManager.SetComponentData(shootLightEntity,
+                        LocalTransform.FromPosition(shootAttack.ValueRO.OnShoot.ShootPosition));
                 }
             }
         }

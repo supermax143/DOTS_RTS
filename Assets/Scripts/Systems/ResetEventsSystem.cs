@@ -20,7 +20,7 @@ namespace Systems
             
             foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
             {
-                shootAttack.ValueRW.OnShoot = false;
+                shootAttack.ValueRW.OnShoot.Triggered = false;
             }
         }
 
