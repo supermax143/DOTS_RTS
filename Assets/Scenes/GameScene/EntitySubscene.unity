@@ -1377,6 +1377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.EntitiesReferenceAuthoring
   BulletPrefab: {fileID: 6150420120143240538, guid: d1fa653f2b67971459e979f6bdca50a0, type: 3}
   ZombiePrefab: {fileID: 8595239303012869807, guid: 73ec570c7d7b6f94cbc8675aa4734740, type: 3}
+  ShootLightPrefab: {fileID: 562477372110538685, guid: 414c24d329b5e754fa0033841ee47f3d, type: 3}
 --- !u!4 &1251417287
 Transform:
   m_ObjectHideFlags: 0

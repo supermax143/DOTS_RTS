@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8921854853859777069}
   - component: {fileID: 4630423288235000616}
   - component: {fileID: 7710469624811045242}
+  - component: {fileID: 2232461743077432429}
   m_Layer: 0
   m_Name: ShootLight
   m_TagString: Untagged
@@ -44,7 +45,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 0.9622642, g: 0.89027876, b: 0.040850822, a: 1}
-  m_Intensity: 20
+  m_Intensity: 15
   m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -127,3 +128,16 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &2232461743077432429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562477372110538685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7d06b4df1ab0f40a38cd90be8cefc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.ShootLightAuthoring
+  LifeTime: 0.05

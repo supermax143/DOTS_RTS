@@ -62,8 +62,11 @@ namespace DefaultNamespace
                 bulletComponent.ValueRW.Damage = shootAttack.ValueRO.Damage;
                 bulletComponent.ValueRW.Speed = shootAttack.ValueRO.BulletSpeed;
                 
-                
-                
+                var shootLightEntity = state.EntityManager.Instantiate(entitiesReference.ShootLight);
+                // Устанавливаем позицию ShootLight в том же месте что и пуля
+                state.EntityManager.SetComponentData(shootLightEntity,
+                    LocalTransform.FromPosition(bulletSpawnPosition));
+               
                 shootAttack.ValueRW.CurrentCooldown = shootAttack.ValueRO.CooldownTime;
             }
             

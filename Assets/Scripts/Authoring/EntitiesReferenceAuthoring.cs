@@ -8,6 +8,7 @@ namespace DefaultNamespace
     {
         public GameObject BulletPrefab;
         public GameObject ZombiePrefab;
+        public GameObject ShootLightPrefab;
         
         public class Baker : Baker<EntitiesReferenceAuthoring>
         {
@@ -16,6 +17,7 @@ namespace DefaultNamespace
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 Entity bulletEntity = Entity.Null;
                 Entity zombieEntity = Entity.Null;
+                Entity shootLightEntity = Entity.Null;
                 
                 if (authoring.BulletPrefab != null)
                 {
@@ -27,10 +29,16 @@ namespace DefaultNamespace
                     zombieEntity = GetEntity(authoring.ZombiePrefab, TransformUsageFlags.Dynamic);
                 }
                 
+                if (authoring.ShootLightPrefab != null)
+                {
+                    shootLightEntity = GetEntity(authoring.ShootLightPrefab, TransformUsageFlags.Dynamic);
+                }
+                
                 AddComponent(entity, new EntitiesReference()
                 {
                     Bullet = bulletEntity,
-                    Zombie = zombieEntity
+                    Zombie = zombieEntity,
+                    ShootLight = shootLightEntity
                 });
             }
         }
@@ -40,5 +48,6 @@ namespace DefaultNamespace
     {
         public Entity Bullet;
         public Entity Zombie;
+        public Entity ShootLight;
     }
 }
