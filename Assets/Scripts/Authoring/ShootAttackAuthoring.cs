@@ -39,5 +39,7 @@ namespace DefaultNamespace
         public float BulletSpeed;
         public float CurrentCooldown;
         public float3 ShootLocalPosition;
+
+        public bool OnShoot;
     }
 }

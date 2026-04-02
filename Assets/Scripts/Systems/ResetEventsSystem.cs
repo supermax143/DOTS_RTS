@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using DefaultNamespace;
+using Unity.Burst;
 using Unity.Entities;
 
 namespace Systems
@@ -15,6 +16,11 @@ namespace Systems
             {
                 selection.ValueRW.OnSelected = false;
                 selection.ValueRW.OnDeselected = false;
+            }
+            
+            foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
+            {
+                shootAttack.ValueRW.OnShoot = false;
             }
         }
 

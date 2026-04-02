@@ -4,7 +4,7 @@ using Unity.Collections;
 
 namespace DefaultNamespace
 {
-    public partial struct RemoveShootLightSystem : ISystem
+    public partial struct ShootLightRemoveSystem : ISystem
     {
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
