@@ -5,9 +5,8 @@ namespace DefaultNamespace
 {
     public class HealthBarAuthoring : MonoBehaviour
     {
-        [SerializeField]
         public Transform HealthBarTransform;
-       
+        public Transform HealthTarget;
         
         public class Baker : Baker<HealthBarAuthoring>
         {
@@ -16,7 +15,8 @@ namespace DefaultNamespace
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, new HealthBar()
                 {
-                    HealthBarEntity = GetEntity(authoring.HealthBarTransform, TransformUsageFlags.Dynamic),
+                    HealthBarEntity = GetEntity(authoring.HealthBarTransform, TransformUsageFlags.NonUniformScale),
+                    HealthTargetEntity = GetEntity(authoring.HealthTarget, TransformUsageFlags.Dynamic),
                 });
             }
         }
@@ -25,5 +25,6 @@ namespace DefaultNamespace
     public struct HealthBar : IComponentData
     {
         public Entity HealthBarEntity;
+        public Entity HealthTargetEntity;
     }
 }

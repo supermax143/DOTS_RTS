@@ -18,10 +18,8 @@ namespace DefaultNamespace
 {
     public class [SystemName]Authoring : MonoBehaviour
     {
-        [SerializeField]
+
         public float SomeParameter;
-        
-        [SerializeField]
         public SomeEnum SomeEnumParameter;
         
         public class Baker : Baker<[SystemName]Authoring>
@@ -211,6 +209,3 @@ if (component.ValueRW.CurrentCooldown > 0)
 // Выполнение действия
 component.ValueRW.CurrentCooldown = component.ValueRW.CooldownTime;
 ```
-
-### 8. Пример с кулдауном
--
