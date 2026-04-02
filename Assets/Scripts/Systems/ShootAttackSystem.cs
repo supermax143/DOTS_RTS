@@ -15,7 +15,10 @@ namespace DefaultNamespace
         {
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
             
-            foreach (var (shootAttack, target, transform, unitMover, entity) in SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRW<LocalTransform>,  RefRO<UnitMover>>().WithEntityAccess())
+            foreach (var (shootAttack, target, transform, unitMover, entity) in 
+                     SystemAPI.Query<RefRW<ShootAttack>, RefRO<Target>, RefRW<LocalTransform>,  RefRW<UnitMover>>()
+                         .WithDisabled<MoveOverride>()
+                         .WithEntityAccess())
             {
                 if (shootAttack.ValueRW.CurrentCooldown > 0)
                 {
@@ -32,13 +35,24 @@ namespace DefaultNamespace
                 var targetTransform = SystemAPI.GetComponentRO<LocalTransform>(target.ValueRO.TargetEntity);
                 var distance = math.distance(transform.ValueRO.Position, targetTransform.ValueRO.Position);
                 
-                var moveDir = math.normalize(targetTransform.ValueRO.Position - transform.ValueRO.Position);
-                var targetRotation = quaternion.LookRotation(moveDir, math.up());
-                transform.ValueRW.Rotation = targetRotation;
+                
+                // Если цель не достигнута, двигаемся к ней
+                if (distance > shootAttack.ValueRO.Range)
+                {
+                    unitMover.ValueRW.TargetPosition = targetTransform.ValueRO.Position;
+                }
+                else
+                {
+                    // Цель достигнута, стоим на месте
+                    unitMover.ValueRW.TargetPosition = transform.ValueRO.Position;
+                }
                 
                 if (distance > shootAttack.ValueRO.Range)
                     continue;
 
+                var moveDir = math.normalize(targetTransform.ValueRO.Position - transform.ValueRO.Position);
+                var targetRotation = quaternion.LookRotation(moveDir, math.up());
+                transform.ValueRW.Rotation = targetRotation;
                 
                 Debug.Log($"Entity {entity.Index} shoots bullet at target {target.ValueRO.TargetEntity.Index} with damage {shootAttack.ValueRO.Damage}");
 
