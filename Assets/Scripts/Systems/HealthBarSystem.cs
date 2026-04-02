@@ -11,10 +11,14 @@ namespace DefaultNamespace
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (healthBar, health) in SystemAPI.Query<RefRW<HealthBar>, RefRO<Health>>())
+            foreach (var healthBar in SystemAPI.Query<RefRW<HealthBar>>())
             {
-                if (!state.EntityManager.Exists(healthBar.ValueRO.HealthBarEntity))
+                if (!state.EntityManager.Exists(healthBar.ValueRO.HealthBarEntity) || 
+                    !state.EntityManager.Exists(healthBar.ValueRO.HealthTargetEntity))
                     continue;
+                
+                // Get health from target entity
+                var health = SystemAPI.GetComponentRO<Health>(healthBar.ValueRO.HealthTargetEntity);
                 
                 // Calculate health percentage
                 float healthPercentage = health.ValueRO.CurrentHealth / health.ValueRO.MaxHealth;
@@ -29,7 +33,6 @@ namespace DefaultNamespace
                 {
                     Value = scaleMatrix
                 });
-                
             }
         }
     }
