@@ -11,12 +11,24 @@ namespace DefaultNamespace
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var healthBar in SystemAPI.Query<RefRW<HealthBar>>())
+            var cameraForward = Vector3.zero;
+            if (Camera.main != null)
+            {
+                cameraForward = Camera.main.transform.forward;
+            }
+            
+            foreach (var (healthBar, barTransform) in SystemAPI.Query<RefRW<HealthBar>, RefRW<LocalTransform>>())
             {
                 if (!state.EntityManager.Exists(healthBar.ValueRO.HealthBarEntity) || 
                     !state.EntityManager.Exists(healthBar.ValueRO.HealthTargetEntity))
                     continue;
+
+                var parentTransform = SystemAPI.GetComponent<LocalTransform>(healthBar.ValueRO.HealthTargetEntity);
                 
+                barTransform.ValueRW.Rotation = 
+                    parentTransform.InverseTransformRotation(quaternion.LookRotation(cameraForward, math.up()));
+                
+                    
                 // Get health from target entity
                 var health = SystemAPI.GetComponentRO<Health>(healthBar.ValueRO.HealthTargetEntity);
                 
