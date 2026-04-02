@@ -183,6 +183,51 @@ Assets/Scripts/
 - Помните о правильном освобождении `NativeList` с `Allocator.Temp`
 - Используйте `Layers.Unit` для фильтрации юнитов в физических запросах
 
+### 7.1. Масштабирование сущностей в DOTS
+
+**Когда нужно масштабировать сущность только по определенным осям:**
+
+Используйте `PostTransformMatrix` вместо изменения `LocalTransform`:
+
+```csharp
+// Создаем матрицу масштабирования только по нужным осям
+var scaleMatrix = float4x4.Scale(scaleX, 1f, 1f); // Только по X
+// или
+var scaleMatrix = float4x4.Scale(1f, scaleY, 1f); // Только по Y
+// или
+var scaleMatrix = float4x4.Scale(scaleX, scaleY, 1f); // По X и Y
+
+// Применяем PostTransformMatrix
+SystemAPI.SetComponent(targetEntity, new PostTransformMatrix
+{
+    Value = scaleMatrix
+});
+```
+
+**Важные моменты для PostTransformMatrix:**
+- Масштабирует только визуальное представление, не затрагивая физику
+- Позволяет масштабировать по отдельным осям
+- Более производительно чем частые изменения LocalTransform
+
+**TransformUsageFlags для масштабирования:**
+
+При создании entity с неuniform масштабированием используйте:
+```csharp
+// В Baker классе
+HealthBarEntity = GetEntity(authoring.HealthBarTransform, TransformUsageFlags.NonUniformScale),
+```
+
+**Когда использовать PostTransformMatrix:**
+- Health bars (масштабирование только по ширине)
+- UI элементы в DOTS
+- Визуальные эффекты с изменением масштаба
+- Когда нужно сохранить физические параметры объекта
+
+**Когда использовать LocalTransform:**
+- Изменение позиции объекта
+- Равномерное масштабирование по всем осям
+- Когда масштабирование влияет на физику
+
 ### 8. Пример с кулдауном
 
 ```csharp
