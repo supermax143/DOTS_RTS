@@ -19,10 +19,15 @@ namespace DefaultNamespace
             
             foreach (var (healthBar, barTransform) in SystemAPI.Query<RefRW<HealthBar>, RefRW<LocalTransform>>())
             {
-                if (!state.EntityManager.Exists(healthBar.ValueRO.HealthBarEntity) || 
-                    !state.EntityManager.Exists(healthBar.ValueRO.HealthTargetEntity))
-                    continue;
+              
 
+                var health = SystemAPI.GetComponentRO<Health>(healthBar.ValueRO.HealthTargetEntity);
+                if (Mathf.Approximately(health.ValueRO.CurrentHealth, health.ValueRO.MaxHealth))
+                {
+                    barTransform.ValueRW.Scale = 0;
+                    continue;
+                }
+                barTransform.ValueRW.Scale = 1;
                 var parentTransform = SystemAPI.GetComponent<LocalTransform>(healthBar.ValueRO.HealthTargetEntity);
                 
                 barTransform.ValueRW.Rotation = 
@@ -30,7 +35,7 @@ namespace DefaultNamespace
                 
                     
                 // Get health from target entity
-                var health = SystemAPI.GetComponentRO<Health>(healthBar.ValueRO.HealthTargetEntity);
+                
                 
                 // Calculate health percentage
                 float healthPercentage = health.ValueRO.CurrentHealth / health.ValueRO.MaxHealth;
