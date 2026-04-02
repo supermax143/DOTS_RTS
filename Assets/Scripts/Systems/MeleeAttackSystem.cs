@@ -12,6 +12,7 @@ namespace DefaultNamespace
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
             
             foreach (var (meleeAttack, target, transform, unitMover, entity) in SystemAPI.Query<RefRW<MeleeAttack>, RefRO<Target>, RefRW<LocalTransform>, RefRW<UnitMover>>().WithEntityAccess())

@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 5501303307857603986}
   - component: {fileID: 9060582970346732541}
   - component: {fileID: 5254539721496120373}
+  - component: {fileID: -1702979411559676824}
   m_Layer: 6
   m_Name: UnitBase
   m_TagString: Untagged
@@ -276,6 +277,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.AimPositionAuthoring
   AimTransform: {fileID: 2167807075912215455}
+--- !u!114 &-1702979411559676824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194216278878858284}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46643ccca1ed1ee40893c91463f95b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.MoveOverrideAuthoring
+  TargetPosition:
+    x: 0
+    y: 0
+    z: 0
 --- !u!1 &2211037036109153921
 GameObject:
   m_ObjectHideFlags: 0
