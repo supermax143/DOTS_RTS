@@ -84,6 +84,9 @@ Thumbs.db
 .idea/
 **/indexLayout.xml
 
+# Windsurf IDE files
+.windsurf/
+
 # Temporary files
 *.tmp
 *.temp
